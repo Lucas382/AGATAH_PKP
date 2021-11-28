@@ -1,21 +1,56 @@
-<Tarefas>:
-    orientation: 'vertical'
-    ScrollView:
-        BoxLayout:
-            id:box
-            orientation: 'vertical'
-            size_hint_y: None
-            height: self.minimum_height
+<GrenciadorTelas>:
+    Menu:
+        name: 'menu'
+
+    Tarefas:
+        name: 'tarefas'
+
+<Menu>:
     BoxLayout:
-        size_hint_y: None
-        height: 60
-        TextInput:
-            id:texto
+        orientation: 'vertical'
+        padding: 200
+        spacing: 20
+        Image:
+            source: 'Image/logo.png'
+            size_hint_y: None
+            height: 200
+            allow_stretch: True
+
         Button:
-            text: 'Add'
-            size_hint_x: None
-            width: 60
-            on_release:root.add_widget_tarefas()
+            text: 'Tarefas'
+            on_release:app.root.current = 'tarefas'
+            size_hint_y: None
+            height: 40
+        Button:
+            text: 'Assistente'
+            size_hint_y: None
+            height: 40
+
+        Button:
+            text: 'Sair'
+            size_hint_y: None
+            height: 40
+            on_release: app.stop()
+
+<Tarefas>:
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            BoxLayout:
+                id:box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            TextInput:
+                id:texto
+            Button:
+                text: 'Add'
+                size_hint_x: None
+                width: 60
+                on_release:root.add_widget_tarefas()
 
 <Tarefa>:
     size_hint_y: None
@@ -27,4 +62,4 @@
         text: 'X'
         size_hint_x: None
         width: 60
-        on_release: app.root.ids.box.remove_widget(root)
+        on_release: app.root.get_screen('tarefas').ids.box.remove_widget(root)

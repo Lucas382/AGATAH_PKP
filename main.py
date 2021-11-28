@@ -1,11 +1,19 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 
+class GrenciadorTelas(ScreenManager):
+    pass
 
-class Tarefas(BoxLayout):
+
+class Menu(Screen):
+    pass
+
+
+class Tarefas(Screen):
     #Define o metodo de inicialização da classe
-    def __init__(self,tarefas, **kwargs):
+    def __init__(self,tarefas=[], **kwargs):
         super().__init__(**kwargs)  #--> chama o metodo de inicialização do Super(BoxLayout)
         for tarefa in tarefas:
             self.ids.box.add_widget(Tarefa(text=tarefa))
@@ -25,7 +33,7 @@ class Tarefa(BoxLayout):
 
 class Test(App):
     def build(self):
-        return Tarefas(['Fazer compras', 'Buscar filho'])
+        return GrenciadorTelas()
 
 
 if __name__ == '__main__':
