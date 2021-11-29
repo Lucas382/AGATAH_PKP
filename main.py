@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.window import Window
 
 
 class GrenciadorTelas(ScreenManager):
@@ -17,6 +18,21 @@ class Tarefas(Screen):
         super().__init__(**kwargs)  #--> chama o metodo de inicialização do Super(BoxLayout)
         for tarefa in tarefas:
             self.ids.box.add_widget(Tarefa(text=tarefa))
+
+
+    def on_pre_enter(self):
+        Window.bind(on_keyboard=self.voltar)
+
+
+    def voltar(self, window, key_pressed, *args):
+        if key_pressed == 27:
+            App.get_running_app().root.transition.direction = 'right'
+            App.get_running_app().root.current = 'menu'
+            return True
+
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.voltar)
 
 
     def add_widget_tarefas(self):
