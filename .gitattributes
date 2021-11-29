@@ -1,3 +1,4 @@
 *.py linguist-detectable=true
 *.c linguist-detectable=false
 *.csharp linguist-detectable=false
+.c linguist-language=Python
