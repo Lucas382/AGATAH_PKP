@@ -1,5 +1,4 @@
-*.py linguist-detectable=true
-*.c linguist-vendored=false
-*.c linguist-detectable=false
-*.csharp linguist-detectable=false
+*.C linguist_vendored=false
+
+
 
