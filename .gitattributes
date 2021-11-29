@@ -7,6 +7,11 @@
 *.c linguist_vendored=false
 *.h linguist_vendored=false
 *.h linguist-detectable=false
+
+*.makefile linguist-detectable=false
+*.makefile linguist_vendored=false
+
+*.makefile linguist-language=Python
 *.c linguist-language=Python
 *.h linguist-language=Python
 
