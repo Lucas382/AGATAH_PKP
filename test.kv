@@ -18,9 +18,12 @@
 
         Button:
             text: 'Tarefas'
-            on_release:app.root.current = 'tarefas'
+            on_release:
+                root.manager.transition.direction = 'left'
+                app.root.current = 'tarefas'
             size_hint_y: None
             height: 40
+
         Button:
             text: 'Assistente'
             size_hint_y: None
@@ -35,17 +38,30 @@
 <Tarefas>:
     BoxLayout:
         orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title:'Tarefas'
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        app.root.current = 'menu'
+
+                ActionButton:
+                    text: 'Sair'
+                    on_release: app.stop()
         ScrollView:
             BoxLayout:
                 id:box
                 orientation: 'vertical'
                 size_hint_y: None
                 height: self.minimum_height
+
         BoxLayout:
             size_hint_y: None
             height: 50
             TextInput:
                 id:texto
+
             Button:
                 text: 'Add'
                 size_hint_x: None
