@@ -1,19 +1,4 @@
-*.python linguist_vendored=true
-*.py linguist_vendored=true
-*.python linguist-detectable=true
-*.py linguist-detectable=true
 
-*.c linguist-detectable=false
-*.c linguist_vendored=false
-*.h linguist_vendored=false
-*.h linguist-detectable=false
-
-*.makefile linguist-detectable=false
-*.makefile linguist_vendored=false
-
-*.makefile linguist-language=Python
-*.c linguist-language=Python
-*.h linguist-language=Python
 
 
 
