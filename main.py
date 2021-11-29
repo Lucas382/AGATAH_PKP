@@ -22,13 +22,21 @@ class Tarefas(Screen):
 
     def on_pre_enter(self):
         Window.bind(on_keyboard=self.voltar)
+        Window.bind(on_keyboard=self.adicionar_tarefa)
+        self.ids.texto.focus=True
 
 
     def voltar(self, window, key_pressed, *args):
-        if key_pressed == 27:
+        if key_pressed == 27: #Key: Escape
             App.get_running_app().root.transition.direction = 'right'
             App.get_running_app().root.current = 'menu'
             return True
+
+
+    def adicionar_tarefa(self,window, key_pressed, *args):
+        if key_pressed == 13: #Key: Return
+            self.add_widget_tarefas()
+            self.ids.texto.focus = True
 
 
     def on_pre_leave(self):
@@ -37,8 +45,10 @@ class Tarefas(Screen):
 
     def add_widget_tarefas(self):
         texto = self.ids.texto.text
-        self.ids.box.add_widget(Tarefa(text=texto))
-        self.ids.texto.text = ''
+        print(texto)
+        if texto.strip():
+            self.ids.box.add_widget(Tarefa(text=texto))
+            self.ids.texto.text = ''
 
 
 class Tarefa(BoxLayout):
