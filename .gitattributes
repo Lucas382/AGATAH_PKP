@@ -1,4 +1,8 @@
-*.C linguist_vendored=false
+*.py linguist_vendored=true
+*.c linguist_vendored=false
+*.h linguist_vendored=false
+*.c linguist-language=Python
+
 
 
 
