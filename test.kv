@@ -8,6 +8,12 @@
 <Menu>:
     BoxLayout:
         orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba:(.2, .2, .2, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
         padding: 200
         spacing: 20
         Image:
@@ -38,6 +44,12 @@
 <Tarefas>:
     BoxLayout:
         orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba:(.2, .2, .2, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
         ActionBar:
             ActionView:
                 ActionPrevious:
