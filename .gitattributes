@@ -6,7 +6,9 @@
 *.c linguist-detectable=false
 *.c linguist_vendored=false
 *.h linguist_vendored=false
+*.h linguist-detectable=false
 *.c linguist-language=Python
+*.h linguist-language=Python
 
 
 
