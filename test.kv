@@ -8,38 +8,52 @@
 <Menu>:
     BoxLayout:
         orientation: 'vertical'
+        padding: "200dp"
+        spacing: "20dp"
         canvas.before:
             Color:
                 rgba:(.2, .2, .2, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
-        padding: 200
-        spacing: 20
         Image:
             source: 'Image/logo.png'
             size_hint_y: None
-            height: 200
+            height: "200dp"
             allow_stretch: True
 
-        Button:
+        BotaoCustomizado:
             text: 'Tarefas'
             on_release:
                 root.manager.transition.direction = 'left'
                 app.root.current = 'tarefas'
             size_hint_y: None
-            height: 40
+            height: "40dp"
 
-        Button:
+        BotaoCustomizado:
             text: 'Assistente'
             size_hint_y: None
-            height: 40
+            height: "40dp"
 
-        Button:
+        BotaoCustomizado:
             text: 'Sair'
             size_hint_y: None
-            height: 40
+            height: "40dp"
             on_release: app.stop()
+
+<BotaoCustomizado@ButtonBehavior+Label>:
+    canvas.before:
+        Color:
+            rgba: (.5, .5, .5, 1)
+        Ellipse:
+            pos:self.pos
+            size:self.height, self.height
+        Ellipse:
+            pos:self.x + self.width - self.height, self.y
+            size: self.height, self.height
+        Rectangle:
+            pos: self.x + self.height / 2.0, self.y
+            size: self.width - self.height, self.height
 
 <Tarefas>:
     BoxLayout:
@@ -70,7 +84,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: 50
+            height: "50dp"
             TextInput:
                 id:texto
                 multiline:False
@@ -78,17 +92,17 @@
             Button:
                 text: 'Add'
                 size_hint_x: None
-                width: 60
+                width: "60dp"
                 on_release:root.add_widget_tarefas()
 
 <Tarefa>:
     size_hint_y: None
-    height:100
+    height:"100dp"
     Label:
         id:label
-        font_size: 30
+        font_size: "30dp"
     Button:
         text: 'X'
         size_hint_x: None
-        width: 60
+        width: "60dp"
         on_release: app.root.get_screen('tarefas').ids.box.remove_widget(root)
