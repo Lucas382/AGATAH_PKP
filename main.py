@@ -1,8 +1,10 @@
 from kivy.app import App
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-
+from kivy.graphics import  Color, Ellipse, Rectangle
 
 class GrenciadorTelas(ScreenManager):
     pass
@@ -10,6 +12,28 @@ class GrenciadorTelas(ScreenManager):
 
 class Menu(Screen):
     pass
+
+class BotaoCustomizado(ButtonBehavior, Label):
+    def __init__(self, **kwargs):
+        super(BotaoCustomizado, self).__init__(**kwargs)
+        self.atualizar()
+
+    def on_pos(self, *args):
+        self.atualizar()
+
+    def on_size(self, *args):
+        self.atualizar()
+
+    def atualizar(self, *args):
+        self.canvas.before.clear()
+        with self.canvas.before:
+            Color(rgba=(0.5, 0.5, 0.5, 1))
+            Ellipse(size=(self.height, self.height),
+                    pos=self.pos)
+            Ellipse(size=(self.height, self.height),
+                    pos=(self.x + self.width-self.height, self.y))
+            Rectangle(size=(self.width-self.height, self.height),
+                      pos=(self.x+self.height/2.0, self.y))
 
 
 class Tarefas(Screen):

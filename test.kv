@@ -41,19 +41,7 @@
             height: "40dp"
             on_release: app.stop()
 
-<BotaoCustomizado@ButtonBehavior+Label>:
-    canvas.before:
-        Color:
-            rgba: (.5, .5, .5, 1)
-        Ellipse:
-            pos:self.pos
-            size:self.height, self.height
-        Ellipse:
-            pos:self.x + self.width - self.height, self.y
-            size: self.height, self.height
-        Rectangle:
-            pos: self.x + self.height / 2.0, self.y
-            size: self.width - self.height, self.height
+
 
 <Tarefas>:
     BoxLayout:
