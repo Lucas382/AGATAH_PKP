@@ -4,16 +4,42 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-from kivy.graphics import  Color, Ellipse, Rectangle
+from kivy.graphics import Color, Ellipse, Rectangle
+from kivy.properties import ListProperty
+from kivy.uix.popup import Popup
+from kivy.uix.image import Image
 
 class GrenciadorTelas(ScreenManager):
     pass
 
 
 class Menu(Screen):
-    pass
+    def on_pre_enter(self):
+        Window.bind(on_request_close=self.confirmacao)
+
+    def confirmacao(self, *args, **kwargs):
+        box = BoxLayout(orientation='vertical', padding=5, spacing=10)
+        botoes = BoxLayout(padding=40, spacing=10)
+        pop = Popup(title="Deseja sair?", content=box, size_hint=(None, None),
+                    size=(400, 300))
+
+        sim = BotaoCustomizado(text="Sim", on_release=App.get_running_app().stop)
+        nao = BotaoCustomizado(text="Nao", on_release=pop.dismiss)
+        atencao = Image(source='Image/warn.png')
+
+        botoes.add_widget(sim)
+        botoes.add_widget(nao)
+
+        box.add_widget(atencao)
+        box.add_widget(botoes)
+
+        pop.open()
+        return True
+
 
 class BotaoCustomizado(ButtonBehavior, Label):
+    cor = ListProperty([0.5, 0.5, 0.5, 1])
+    cor_press = ListProperty([0.3, 0.3, 0.3, 1])
     def __init__(self, **kwargs):
         super(BotaoCustomizado, self).__init__(**kwargs)
         self.atualizar()
@@ -24,10 +50,19 @@ class BotaoCustomizado(ButtonBehavior, Label):
     def on_size(self, *args):
         self.atualizar()
 
+    def on_press(self, *args):
+        self.cor, self.cor_press = self.cor_press, self.cor
+
+    def on_release(self, *args):
+        self.cor, self.cor_press  = self.cor_press, self.cor
+
+    def on_cor(self,*args):
+        self.atualizar()
+
     def atualizar(self, *args):
         self.canvas.before.clear()
         with self.canvas.before:
-            Color(rgba=(0.5, 0.5, 0.5, 1))
+            Color(rgba=self.cor)
             Ellipse(size=(self.height, self.height),
                     pos=self.pos)
             Ellipse(size=(self.height, self.height),
@@ -67,6 +102,8 @@ class Tarefas(Screen):
         if texto.strip():
             self.ids.box.add_widget(Tarefa(text=texto))
             self.ids.texto.text = ''
+
+
 
 
 class Tarefa(BoxLayout):

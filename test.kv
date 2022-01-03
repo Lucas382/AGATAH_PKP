@@ -39,7 +39,7 @@
             text: 'Sair'
             size_hint_y: None
             height: "40dp"
-            on_release: app.stop()
+            on_release: root.confirmacao()
 
 
 
@@ -62,7 +62,7 @@
 
                 ActionButton:
                     text: 'Sair'
-                    on_release: app.stop()
+                    on_release: app.root.get_screen('menu').confirmacao()
         ScrollView:
             BoxLayout:
                 id:box
