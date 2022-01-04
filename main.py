@@ -8,6 +8,7 @@ from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.properties import ListProperty
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
+from kivy.animation import Animation
 
 class GrenciadorTelas(ScreenManager):
     pass
@@ -21,7 +22,7 @@ class Menu(Screen):
         box = BoxLayout(orientation='vertical', padding=5, spacing=10)
         botoes = BoxLayout(padding=40, spacing=10)
         pop = Popup(title="Deseja sair?", content=box, size_hint=(None, None),
-                    size=(400, 300))
+                    size=(200, 150))
 
         sim = BotaoCustomizado(text="Sim", on_release=App.get_running_app().stop)
         nao = BotaoCustomizado(text="Nao", on_release=pop.dismiss)
@@ -33,6 +34,11 @@ class Menu(Screen):
         box.add_widget(atencao)
         box.add_widget(botoes)
 
+        animText = Animation(color=(0.3,0.3,0.3,1), duration=1.5) + Animation(color=(1,1,1,1), duration=1.5)
+        animText.repeat = True
+        animText.start(sim)
+        anim = Animation(size=(400, 300), duration=0.1, t='out_back')
+        anim.start(pop)
         pop.open()
         return True
 
@@ -56,7 +62,7 @@ class BotaoCustomizado(ButtonBehavior, Label):
     def on_release(self, *args):
         self.cor, self.cor_press  = self.cor_press, self.cor
 
-    def on_cor(self,*args):
+    def on_cor(self, *args):
         self.atualizar()
 
     def atualizar(self, *args):
