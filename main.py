@@ -9,6 +9,7 @@ from kivy.properties import ListProperty
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.animation import Animation
+import json
 
 class GrenciadorTelas(ScreenManager):
     pass
@@ -78,16 +79,17 @@ class BotaoCustomizado(ButtonBehavior, Label):
 
 
 class Tarefas(Screen):
-    #Define o metodo de inicialização da classe
-    def __init__(self,tarefas=[], **kwargs):
-        super().__init__(**kwargs)  #--> chama o metodo de inicialização do Super(BoxLayout)
-        for tarefa in tarefas:
-            self.ids.box.add_widget(Tarefa(text=tarefa))
-
+    tarefas = []
+    path = ''
     def on_pre_enter(self):
+        self.path = App.get_running_app().user_data_dir+'/'
+        self.loadData()
         Window.bind(on_keyboard=self.voltar)
         Window.bind(on_keyboard=self.adicionar_tarefa)
         self.ids.texto.focus=True
+        for tarefa in self.tarefas:
+            self.ids.box.add_widget(Tarefa(text=tarefa))
+
 
     def voltar(self, window, key_pressed, *args):
         if key_pressed == 27: #Key: Escape
@@ -103,11 +105,31 @@ class Tarefas(Screen):
     def on_pre_leave(self):
         Window.unbind(on_keyboard=self.voltar)
 
+    def loadData(self,*args):
+        try:
+            with open(self.path+'data.json', 'r') as data:
+                self.tarefas = json.load(data)
+        except FileNotFoundError:
+            pass
+
+    def saveData(self):
+        with open(self.path+'data.json','w') as data:
+            json.dump(self.tarefas, data)
+
+    def removeWidget(self,tarefa):
+        texto = tarefa.ids.label.text
+        self.ids.box.remove_widget(tarefa)
+        self.tarefas.remove(texto)
+        self.saveData()
+
+
     def add_widget_tarefas(self):
         texto = self.ids.texto.text
         if texto.strip():
             self.ids.box.add_widget(Tarefa(text=texto))
             self.ids.texto.text = ''
+            self.tarefas.append(texto)
+            self.saveData()
 
 
 
