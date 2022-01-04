@@ -9,6 +9,7 @@ from kivy.properties import ListProperty
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.animation import Animation
+from kivy.core.audio import SoundLoader
 import json
 
 class GrenciadorTelas(ScreenManager):
@@ -20,10 +21,12 @@ class Menu(Screen):
         Window.bind(on_request_close=self.confirmacao)
 
     def confirmacao(self, *args, **kwargs):
-        box = BoxLayout(orientation='vertical', padding=5, spacing=10)
-        botoes = BoxLayout(padding=40, spacing=10)
+        global popSound
+        popSound.play()
+        box = BoxLayout(orientation='vertical', padding='5sp', spacing='10sp')
+        botoes = BoxLayout(padding=30*0.3, spacing=10*0.5)
         pop = Popup(title="Deseja sair?", content=box, size_hint=(None, None),
-                    size=(200, 150))
+                    size=('200dp', '150dp'))
 
         sim = BotaoCustomizado(text="Sim", on_release=App.get_running_app().stop)
         nao = BotaoCustomizado(text="Nao", on_release=pop.dismiss)
@@ -81,9 +84,13 @@ class BotaoCustomizado(ButtonBehavior, Label):
 class Tarefas(Screen):
     tarefas = []
     path = ''
+    popSound = None
+    poppapSound = None
+
     def on_pre_enter(self):
+        self.ids.box.clear_widgets()
         self.path = App.get_running_app().user_data_dir+'/'
-        self.loadData()
+        self.load_data_tarefas()
         Window.bind(on_keyboard=self.voltar)
         Window.bind(on_keyboard=self.adicionar_tarefa)
         self.ids.texto.focus=True
@@ -105,31 +112,34 @@ class Tarefas(Screen):
     def on_pre_leave(self):
         Window.unbind(on_keyboard=self.voltar)
 
-    def loadData(self,*args):
+    def load_data_tarefas(self,*args):
         try:
             with open(self.path+'data.json', 'r') as data:
                 self.tarefas = json.load(data)
         except FileNotFoundError:
             pass
 
-    def saveData(self):
+    def save_data_tarefas(self):
         with open(self.path+'data.json','w') as data:
             json.dump(self.tarefas, data)
 
-    def removeWidget(self,tarefa):
+    def remove_widget_tarefas(self,tarefa):
+        global poppapSound
+        poppapSound.play()
         texto = tarefa.ids.label.text
         self.ids.box.remove_widget(tarefa)
         self.tarefas.remove(texto)
-        self.saveData()
-
+        self.save_data_tarefas()
 
     def add_widget_tarefas(self):
+        global popSound
+        popSound.play()
         texto = self.ids.texto.text
         if texto.strip():
             self.ids.box.add_widget(Tarefa(text=texto))
             self.ids.texto.text = ''
             self.tarefas.append(texto)
-            self.saveData()
+            self.save_data_tarefas()
 
 
 
@@ -143,6 +153,9 @@ class Tarefa(BoxLayout):
 class Test(App):
     def build(self):
         return GrenciadorTelas()
+
+popSound = SoundLoader.load('sound/pop_alert.mp3')
+poppapSound = SoundLoader.load('sound/long_pop.wav')
 
 
 if __name__ == '__main__':

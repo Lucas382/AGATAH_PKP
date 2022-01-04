@@ -8,7 +8,7 @@
 <Menu>:
     BoxLayout:
         orientation: 'vertical'
-        padding: "200dp"
+        padding: root.width*0.25, root.height*0.1
         spacing: "20dp"
         canvas.before:
             Color:
@@ -18,8 +18,7 @@
                 size: self.size
         Image:
             source: 'Image/logo.png'
-            size_hint_y: None
-            height: "200dp"
+            size_hint_y:40
             allow_stretch: True
 
         BotaoCustomizado:
@@ -29,6 +28,7 @@
                 app.root.current = 'tarefas'
             size_hint_y: None
             height: "40dp"
+
 
         BotaoCustomizado:
             text: 'Assistente'
@@ -72,7 +72,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: "50dp"
+            height: "50sp"
             TextInput:
                 id:texto
                 multiline:False
@@ -80,17 +80,17 @@
             Button:
                 text: 'Add'
                 size_hint_x: None
-                width: "60dp"
+                width: "60sp"
                 on_release:root.add_widget_tarefas()
 
 <Tarefa>:
     size_hint_y: None
-    height:"100dp"
+    height:"100sp"
     Label:
         id:label
-        font_size: "30dp"
+        font_size: "20sp"
     Button:
         text: 'X'
         size_hint_x: None
-        width: "60dp"
-        on_release: app.root.get_screen('tarefas').removeWidget(root)
+        width: "40sp"
+        on_release: app.root.get_screen('tarefas').remove_widget_tarefas(root)
