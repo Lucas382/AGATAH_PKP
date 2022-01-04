@@ -10,6 +10,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.animation import Animation
 from kivy.core.audio import SoundLoader
+from kivy.uix.slider import Slider
 import json
 
 class GrenciadorTelas(ScreenManager):
@@ -19,6 +20,7 @@ class GrenciadorTelas(ScreenManager):
 class Menu(Screen):
     def on_pre_enter(self):
         Window.bind(on_request_close=self.confirmacao)
+
 
     def confirmacao(self, *args, **kwargs):
         global popSound
@@ -80,6 +82,29 @@ class BotaoCustomizado(ButtonBehavior, Label):
             Rectangle(size=(self.width-self.height, self.height),
                       pos=(self.x+self.height/2.0, self.y))
 
+class Configuracao(Screen):
+    configs = []
+
+    def on_pre_enter(self):
+        self.load_config()
+
+    def save_config(self):
+        with open('config.json','w') as config:
+            json.dump(self.configs, config)
+
+    def load_config(self):
+        try:
+            with open('config.json', 'r') as config:
+                self.ids.slider.value = json.load(config)*200
+        except FileNotFoundError:
+            pass
+
+    def volume(self,volume,*args):
+        popSound.volume = volume/200
+        poppapSound.volume = volume/200
+        self.configs = popSound.volume
+
+
 
 class Tarefas(Screen):
     tarefas = []
@@ -112,7 +137,7 @@ class Tarefas(Screen):
     def on_pre_leave(self):
         Window.unbind(on_keyboard=self.voltar)
 
-    def load_data_tarefas(self,*args):
+    def load_data_tarefas(self, *args):
         try:
             with open(self.path+'data.json', 'r') as data:
                 self.tarefas = json.load(data)
@@ -156,6 +181,8 @@ class Test(App):
 
 popSound = SoundLoader.load('sound/pop_alert.mp3')
 poppapSound = SoundLoader.load('sound/long_pop.wav')
+popSound.volume = 1
+poppapSound.volume = 1
 
 
 if __name__ == '__main__':

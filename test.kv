@@ -5,6 +5,9 @@
     Tarefas:
         name: 'tarefas'
 
+    Configuracao:
+        name: 'configuracao'
+
 <Menu>:
     BoxLayout:
         orientation: 'vertical'
@@ -23,12 +26,11 @@
 
         BotaoCustomizado:
             text: 'Tarefas'
+            size_hint_y: None
+            height: "40dp"
             on_release:
                 root.manager.transition.direction = 'left'
                 app.root.current = 'tarefas'
-            size_hint_y: None
-            height: "40dp"
-
 
         BotaoCustomizado:
             text: 'Assistente'
@@ -36,11 +38,70 @@
             height: "40dp"
 
         BotaoCustomizado:
+            text: 'Configurações'
+            size_hint_y: None
+            height: "40dp"
+            on_release:
+                root.manager.transition.direction = 'left'
+                app.root.current = 'configuracao'
+
+        BotaoCustomizado:
             text: 'Sair'
             size_hint_y: None
             height: "40dp"
             on_release: root.confirmacao()
 
+
+<Configuracao>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba:(.2, .2, .2, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title:'Tarefas'
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        app.root.current = 'menu'
+
+                ActionButton:
+                    text: 'Sair'
+                    on_release: app.root.get_screen('menu').confirmacao()
+
+        ScrollView:
+            do_scroll: False
+            scroll_y:0.95
+            BoxLayout:
+                id:box_config
+                spacing:'20sp'
+                padding: root.width*0.25, 10
+                orientation: 'vertical'
+                size_hint_y: None
+
+                BoxLayout:
+                    spacing:'20sp'
+                    Slider:
+                        id: slider
+                        min: 0
+                        max: 100
+                        value: 100
+                        step: 1
+                        size_hint_x:20
+                        on_touch_up: root.volume(slider.value)
+
+                    Label:
+                        text: str(slider.value)
+
+        BotaoCustomizado:
+            text: 'Salvar'
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.save_config()
 
 
 <Tarefas>:
