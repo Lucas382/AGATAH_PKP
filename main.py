@@ -10,12 +10,10 @@ from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.animation import Animation
 from kivy.core.audio import SoundLoader
-from kivy.uix.slider import Slider
 import json
 
 class GrenciadorTelas(ScreenManager):
     pass
-
 
 class Menu(Screen):
     def on_pre_enter(self):
