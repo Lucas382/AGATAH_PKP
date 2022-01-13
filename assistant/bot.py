@@ -1,4 +1,7 @@
 import json
+import sys
+import os
+import subprocess as s
 
 class Bot():
     def __init__(self, bot_name):
@@ -10,14 +13,25 @@ class Bot():
             memory.close()
             memory = open(bot_name+'.json', 'r')
 
-        self.phrase = {'oi': 'Olá, qual o seu nome?', 'tchau': 'tchau'}
         self.known_names = json.load(memory)
         memory.close()
         self.bot_name = bot_name
-        self.history = []
+        self.history = ['']
+        self.phrase = {'oi': 'Olá, qual o seu nome?', 'tchau': 'tchau'}
 
     def bot_speaker(self, phrase):
-        print(phrase)
+        if 'executa' in phrase:
+            platform = sys.platform
+            command = phrase.replace('executa ', '')
+            if 'win' in platform:
+                os.startfile(command)
+            if 'linux' in platform:
+                try:
+                    s.Popen(command)
+                except FileNotFoundError:
+                    s.Popen(['xdg-open',command])
+        else:
+            print(phrase)
         self.history.append(phrase)
 
     def bot_listener(self):
@@ -39,7 +53,7 @@ class Bot():
             resp = self.response_name(name)
             return resp
         try:
-            resp = eval(phrase)
+            resp = str(eval(phrase))
             return resp
         except:
             pass
