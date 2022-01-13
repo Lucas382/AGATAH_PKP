@@ -5,5 +5,5 @@ while True:
     phrase = Bot.bot_listener()
     resp = Bot.bot_tinker(phrase)
     Bot.bot_speaker(resp)
-    if phrase == 'tchau':
+    if resp == 'tchau':
         break

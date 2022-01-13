@@ -1,14 +1,20 @@
-from dataclasses import dataclass, field
-from typing import List
+import json
 
+class Bot():
+    def __init__(self, bot_name):
+        try:
+            memory = open(bot_name+'.json', 'r')
+        except FileNotFoundError:
+            memory = open(bot_name+'.json', 'w')
+            memory.write('["Lucas"]')
+            memory.close()
+            memory = open(bot_name+'.json', 'r')
 
-
-@dataclass()
-class Bot:
-    bot_name: str = 'botolino'
-    history: List[str] = field(default_factory=list)
-    known_names: List[str] = field(default_factory=list)
-
+        self.phrase = {'oi': 'Olá, qual o seu nome?', 'tchau': 'tchau'}
+        self.known_names = json.load(memory)
+        memory.close()
+        self.bot_name = bot_name
+        self.history = []
 
     def bot_speaker(self, phrase):
         print(phrase)
@@ -21,12 +27,22 @@ class Bot:
         return phrase
 
     def bot_tinker(self, phrase):
-        if phrase == 'oi':
-            return 'Olá, qual o seu nome?'
+        if phrase in self.phrase:
+            return self.phrase[phrase]
+        if phrase == 'aprende':
+            key = input('Digite a frase a ser aprendida: ')
+            resp = input('Digite a resposta a frase aprendida: ')
+            self.phrase[key] = resp
+            return 'Aprendido'
         if self.history[-1] == 'Olá, qual o seu nome?':
             name = self.get_name(phrase)
             resp = self.response_name(name)
             return resp
+        try:
+            resp = eval(phrase)
+            return resp
+        except:
+            pass
         return 'Não entendi ?_? '
 
     def get_name(self, name):
@@ -40,5 +56,8 @@ class Bot:
             phrase = 'Eaew '
         else:
             phrase = 'Muito prazer '
+            self.known_names.append(name)
+            with open(self.bot_name+'.json', 'w') as data:
+                json.dump(self.known_names, data)
 
         return phrase+name
