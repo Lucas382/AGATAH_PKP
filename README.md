@@ -1,5 +1,5 @@
 # AGATAH_PKP
-Using Python, Kivy and PostgreSQL to make a virtual assistant
+Using Python, Kivy to make a virtual assistant
 this is my personal project to help me improve my skills and 
 support my daily tasks.
 
